@@ -10,5 +10,10 @@
         AsteriskToken,
         MinusToken,
         BadToken,
+        OpenParenToken,
+        CloseParenToken,
+        ParenthesizedExpression,
+        NumericExpression,
+        BinaryExpression,
     }
 }

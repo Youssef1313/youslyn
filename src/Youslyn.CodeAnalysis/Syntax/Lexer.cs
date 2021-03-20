@@ -79,6 +79,18 @@ namespace Youslyn.CodeAnalysis.Syntax
                 return new SyntaxToken(SyntaxKind.SlashToken, "/", null);
             }
 
+            if (Current == '(')
+            {
+                _position++;
+                return new SyntaxToken(SyntaxKind.OpenParenToken, "(", null);
+            }
+
+            if (Current == ')')
+            {
+                _position++;
+                return new SyntaxToken(SyntaxKind.CloseParenToken, ")", null);
+            }
+
             string unexpected = Current.ToString();
             AddError($"Unexpected character '{unexpected}'.");
             _position++;

@@ -5,13 +5,16 @@ namespace Youslyn.CodeAnalysis.Syntax
 {
     public sealed class SyntaxTree
     {
-        public SyntaxTree(SyntaxNode root, ImmutableArray<DiagnosticDescriptor> diagnostics)
+        // Only for now we are capable of parsing expressions.
+        public SyntaxTree(ExpressionSyntax root, ImmutableArray<DiagnosticDescriptor> diagnostics)
         {
             Root = root;
             Diagnostics = diagnostics;
         }
 
-        public SyntaxNode Root { get; }
+        public ExpressionSyntax Root { get; }
         public ImmutableArray<DiagnosticDescriptor> Diagnostics { get; }
+
+        public static SyntaxTree Parse(string text) => new Parser(text).Parse();
     }
 }

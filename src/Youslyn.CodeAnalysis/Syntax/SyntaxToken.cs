@@ -2,7 +2,8 @@
 {
     public sealed class SyntaxToken
     {
-        public SyntaxToken(SyntaxKind kind, string text, object? value)
+        // text can be null for fabricated tokens. See Parser.Match(SyntaxKind) method.
+        public SyntaxToken(SyntaxKind kind, string? text, object? value)
         {
             Kind = kind;
             Text = text ?? throw new System.ArgumentNullException(nameof(text));
@@ -10,7 +11,7 @@
         }
 
         public SyntaxKind Kind { get; }
-        public string Text { get; }
+        public string? Text { get; }
         public object? Value { get; }
     }
 }
