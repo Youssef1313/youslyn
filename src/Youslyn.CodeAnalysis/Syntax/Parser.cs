@@ -32,32 +32,11 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         private SyntaxToken Current => _tokens[_position];
 
-        private SyntaxToken NextToken()
+        public SyntaxTree Parse()
         {
-            var current = Current;
-            _position++;
-            return current;
-        }
-
-        private void AddError(string message)
-        {
-            _diagnosticsBuilder.Add(new DiagnosticDescriptor(message, DiagnosticSeverity.Error));
-        }
-
-        /// <summary>
-        /// If the current token matches <paramref name="kind"/>, returns it and advances the position.
-        /// Otherwise, add a diagnostic and fabricates a token with the requested <paramref name="kind"/>.
-        /// </summary>
-        private SyntaxToken Match(SyntaxKind kind)
-        {
-            if (Current.Kind == kind)
-            {
-                return NextToken();
-            }
-
-            AddError($"Expected token of kind '{kind}'. Found '{Current.Kind}'.");
-            return new SyntaxToken(kind, null, null);
-            
+            var root = ParseTerm();
+            _ = Match(SyntaxKind.EndOfFileToken);
+            return new SyntaxTree(root, Diagnostics);
         }
 
         /*
@@ -65,7 +44,7 @@ namespace Youslyn.CodeAnalysis.Syntax
          *   expressions. It can be a literal or a parenthesized expression.
          */
 
-        public ExpressionSyntax ParsePrimaryExpression()
+        private ExpressionSyntax ParsePrimaryExpression()
         {
             if (Current.Kind == SyntaxKind.OpenParenToken)
             {
@@ -77,13 +56,6 @@ namespace Youslyn.CodeAnalysis.Syntax
 
             var number = Match(SyntaxKind.NumericLiteralToken);
             return new NumericExpressionSyntax(number);
-        }
-
-        public SyntaxTree Parse()
-        {
-            var root = ParseFactor();
-            _ = Match(SyntaxKind.EndOfFileToken);
-            return new SyntaxTree(root, Diagnostics);
         }
 
         private ExpressionSyntax ParseTerm()
@@ -112,6 +84,34 @@ namespace Youslyn.CodeAnalysis.Syntax
             }
 
             return left;
+        }
+
+        private SyntaxToken NextToken()
+        {
+            var current = Current;
+            _position++;
+            return current;
+        }
+
+        private void AddError(string message)
+        {
+            _diagnosticsBuilder.Add(new DiagnosticDescriptor(message, DiagnosticSeverity.Error));
+        }
+
+        /// <summary>
+        /// If the current token matches <paramref name="kind"/>, returns it and advances the position.
+        /// Otherwise, add a diagnostic and fabricates a token with the requested <paramref name="kind"/>.
+        /// </summary>
+        private SyntaxToken Match(SyntaxKind kind)
+        {
+            if (Current.Kind == kind)
+            {
+                return NextToken();
+            }
+
+            AddError($"Expected token of kind '{kind}'. Found '{Current.Kind}'.");
+            return new SyntaxToken(kind, null, null);
+
         }
     }
 }

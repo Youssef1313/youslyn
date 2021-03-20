@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dependencies": {
+    ".NETCoreApp,Version=v5.0": {
+      "youslyn.codeanalysis": {
+        "type": "Project"
+      }
+    }
+  }
+}
