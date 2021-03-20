@@ -5,7 +5,7 @@
         public SyntaxToken(SyntaxKind kind, string text, object? value)
         {
             Kind = kind;
-            Text = text;
+            Text = text ?? throw new System.ArgumentNullException(nameof(text));
             Value = value;
         }
 

@@ -2,6 +2,13 @@
 {
     public enum SyntaxKind
     {
-
+        EndOfFileToken,
+        NumericLiteralToken,
+        WhitespaceToken,
+        PlusToken,
+        SlashToken,
+        AsteriskToken,
+        MinusToken,
+        BadToken,
     }
 }
