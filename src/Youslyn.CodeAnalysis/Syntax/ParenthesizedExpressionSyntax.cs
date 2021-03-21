@@ -2,22 +2,22 @@
 
 namespace Youslyn.CodeAnalysis.Syntax
 {
-    internal class ParenthesizedExpressionSyntax : ExpressionSyntax
+    public sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
     {
-        private SyntaxToken _openParen;
-        private ExpressionSyntax _expression;
-        private SyntaxToken _closeParen;
-
         public ParenthesizedExpressionSyntax(SyntaxToken openParen, ExpressionSyntax expression, SyntaxToken closeParen)
         {
-            _openParen = openParen;
-            _expression = expression;
-            _closeParen = closeParen;
+            OpenParen = openParen;
+            Expression = expression;
+            CloseParen = closeParen;
         }
+
+        public SyntaxToken OpenParen { get; }
+        public ExpressionSyntax Expression { get; }
+        public SyntaxToken CloseParen { get; }
 
         public override SyntaxKind Kind => SyntaxKind.ParenthesizedExpression;
 
         public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create(
-            new SyntaxNodeOrToken(_openParen), new SyntaxNodeOrToken(_expression), new SyntaxNodeOrToken(_closeParen));
+            new SyntaxNodeOrToken(OpenParen), new SyntaxNodeOrToken(Expression), new SyntaxNodeOrToken(CloseParen));
     }
 }

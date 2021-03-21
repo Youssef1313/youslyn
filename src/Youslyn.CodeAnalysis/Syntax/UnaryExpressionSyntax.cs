@@ -2,20 +2,20 @@
 
 namespace Youslyn.CodeAnalysis.Syntax
 {
-    internal class UnaryExpressionSyntax : ExpressionSyntax
+    public sealed class UnaryExpressionSyntax : ExpressionSyntax
     {
-        private SyntaxToken _operatorToken;
-        private ExpressionSyntax _operand;
-
         public UnaryExpressionSyntax(SyntaxToken operatorToken, ExpressionSyntax operand)
         {
-            _operatorToken = operatorToken;
-            _operand = operand;
+            OperatorToken = operatorToken;
+            Operand = operand;
         }
+
+        public SyntaxToken OperatorToken { get; }
+        public ExpressionSyntax Operand { get; }
 
         public override SyntaxKind Kind => SyntaxKind.UnaryExpression;
 
         public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create(
-            new SyntaxNodeOrToken(_operatorToken), new SyntaxNodeOrToken(_operand));
+            new SyntaxNodeOrToken(OperatorToken), new SyntaxNodeOrToken(Operand));
     }
 }

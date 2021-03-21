@@ -7,7 +7,7 @@ namespace Youslyn.CodeAnalysis.Syntax
     /// <summary>
     /// A class that represents either a <see cref="SyntaxNode"/> or a <see cref="SyntaxToken"/>.
     /// </summary>
-    public class SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
+    public sealed class SyntaxNodeOrToken : IEquatable<SyntaxNodeOrToken>
     {
         private readonly SyntaxNode? _node;
         private readonly SyntaxToken? _token;

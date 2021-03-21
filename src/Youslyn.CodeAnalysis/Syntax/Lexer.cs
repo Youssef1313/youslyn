@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Youslyn.CodeAnalysis.Diagnostic;
 
 namespace Youslyn.CodeAnalysis.Syntax

@@ -2,7 +2,7 @@
 
 namespace Youslyn.CodeAnalysis.Syntax
 {
-    internal class NumericExpressionSyntax : ExpressionSyntax
+    public sealed class NumericExpressionSyntax : ExpressionSyntax
     {
         public NumericExpressionSyntax(SyntaxToken numberToken)
         {
