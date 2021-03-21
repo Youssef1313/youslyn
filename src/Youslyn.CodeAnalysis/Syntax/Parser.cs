@@ -17,7 +17,12 @@ namespace Youslyn.CodeAnalysis.Syntax
             while (true)
             {
                 SyntaxToken token = lexer.EatToken();
-                tokensBuilder.Add(token);
+                if (token.Kind != SyntaxKind.WhitespaceToken &&
+                    token.Kind != SyntaxKind.BadToken)
+                {
+                    tokensBuilder.Add(token);
+                }
+
                 if (token.Kind == SyntaxKind.EndOfFileToken)
                 {
                     break;
@@ -34,9 +39,29 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         public SyntaxTree Parse()
         {
-            var root = ParseTerm();
+            var root = ParseExpression();
             _ = Match(SyntaxKind.EndOfFileToken);
             return new SyntaxTree(root, Diagnostics);
+        }
+
+        private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
+        {
+            var left = ParsePrimaryExpression();
+
+            while (true)
+            {
+                var precedence = SyntaxFacts.GetBinaryPrecedence(Current);
+                if (precedence == 0 && precedence <= parentPrecedence)
+                {
+                    break;
+                }
+
+                var operatorToken = NextToken();
+                var right = ParseExpression(precedence);
+                left = new BinaryExpressionSyntax(left, operatorToken, right);
+            }
+
+            return left;
         }
 
         /*
@@ -49,41 +74,13 @@ namespace Youslyn.CodeAnalysis.Syntax
             if (Current.Kind == SyntaxKind.OpenParenToken)
             {
                 var open = NextToken();
-                var expression = ParseTerm();
+                var expression = ParseExpression();
                 var close = Match(SyntaxKind.CloseParenToken);
                 return new ParenthesizedExpressionSyntax(open, expression, close);
             }
 
             var number = Match(SyntaxKind.NumericLiteralToken);
             return new NumericExpressionSyntax(number);
-        }
-
-        private ExpressionSyntax ParseTerm()
-        {
-            var left = ParseFactor();
-            while (Current.Kind == SyntaxKind.PlusToken ||
-                Current.Kind == SyntaxKind.MinusToken)
-            {
-                var operatorToken = NextToken();
-                var right = ParseFactor();
-                left = new BinaryExpressionSyntax(left, operatorToken, right);
-            }
-
-            return left;
-        }
-
-        private ExpressionSyntax ParseFactor()
-        {
-            var left = ParsePrimaryExpression();
-            while (Current.Kind == SyntaxKind.AsteriskToken ||
-                Current.Kind == SyntaxKind.SlashToken)
-            {
-                var operatorToken = NextToken();
-                var right = ParsePrimaryExpression();
-                left = new BinaryExpressionSyntax(left, operatorToken, right);
-            }
-
-            return left;
         }
 
         private SyntaxToken NextToken()
