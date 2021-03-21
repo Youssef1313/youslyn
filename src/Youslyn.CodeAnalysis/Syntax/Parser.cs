@@ -48,21 +48,6 @@ namespace Youslyn.CodeAnalysis.Syntax
         {
             ExpressionSyntax left;
 
-            // TODO: This is not correct. DEBUG WHY!!.
-            // > 5 + -2 *3
-            //└── BinaryExpression
-            //    ├── NumericExpression
-            //    │   └── NumericLiteralToken 5
-            //    ├── PlusToken
-            //    └── UnaryExpression
-            //        ├── MinusToken
-            //        └── BinaryExpression
-            //            ├── NumericExpression
-            //            │   └── NumericLiteralToken 2
-            //            ├── AsteriskToken
-            //            └── NumericExpression
-            //                └── NumericLiteralToken 3
-
             var unaryPrecedence = SyntaxFacts.GetUnaryPrecedence(Current);
             if (unaryPrecedence != 0 && unaryPrecedence >= parentPrecedence)
             {
@@ -78,7 +63,7 @@ namespace Youslyn.CodeAnalysis.Syntax
             while (true)
             {
                 var precedence = SyntaxFacts.GetBinaryPrecedence(Current);
-                if (precedence == 0 && precedence <= parentPrecedence)
+                if (precedence == 0 || precedence <= parentPrecedence)
                 {
                     break;
                 }
