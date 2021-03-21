@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
-using Youslyn.CodeAnalysis.Diagnostic;
+using Youslyn.CodeAnalysis.Diagnostics;
 
 namespace Youslyn.CodeAnalysis.Syntax
 {
     public sealed class SyntaxTree
     {
         // Only for now we are capable of parsing expressions.
-        public SyntaxTree(ExpressionSyntax root, ImmutableArray<DiagnosticDescriptor> diagnostics)
+        public SyntaxTree(ExpressionSyntax root, ImmutableArray<Diagnostic> diagnostics)
         {
             Root = root;
             Diagnostics = diagnostics;
         }
 
         public ExpressionSyntax Root { get; }
-        public ImmutableArray<DiagnosticDescriptor> Diagnostics { get; }
+        public ImmutableArray<Diagnostic> Diagnostics { get; }
 
         public static SyntaxTree Parse(string text) => new Parser(text).Parse();
 

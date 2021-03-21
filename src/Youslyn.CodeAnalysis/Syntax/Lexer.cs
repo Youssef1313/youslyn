@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using Youslyn.CodeAnalysis.Diagnostic;
+using Youslyn.CodeAnalysis.Diagnostics;
 
 namespace Youslyn.CodeAnalysis.Syntax
 {
@@ -7,7 +7,7 @@ namespace Youslyn.CodeAnalysis.Syntax
     {
         private readonly string _text;
         private int _position;
-        private readonly ImmutableArray<DiagnosticDescriptor>.Builder _diagnosticsBuilder = ImmutableArray.CreateBuilder<DiagnosticDescriptor>();
+        private readonly DiagnosticBag _diagnosticBag = new();
 
         public Lexer(string text)
         {
@@ -17,7 +17,7 @@ namespace Youslyn.CodeAnalysis.Syntax
         private char Current
             => _position < _text.Length ? _text[_position] : '\0';
 
-        public ImmutableArray<DiagnosticDescriptor> Diagnostics => _diagnosticsBuilder.ToImmutableArray();
+        public DiagnosticBag DiagnosticBag => _diagnosticBag;
 
         public SyntaxToken EatToken()
         {
@@ -98,7 +98,7 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         private void AddError(string message)
         {
-            _diagnosticsBuilder.Add(new DiagnosticDescriptor(message, DiagnosticSeverity.Error));
+            _diagnosticBag.AddDiagnostic(message, DiagnosticSeverity.Error);
         }
     }
 }

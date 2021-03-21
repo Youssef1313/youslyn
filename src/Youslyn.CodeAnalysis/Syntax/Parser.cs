@@ -1,11 +1,11 @@
 ﻿using System.Collections.Immutable;
-using Youslyn.CodeAnalysis.Diagnostic;
+using Youslyn.CodeAnalysis.Diagnostics;
 
 namespace Youslyn.CodeAnalysis.Syntax
 {
     internal sealed class Parser
     {
-        private readonly ImmutableArray<DiagnosticDescriptor>.Builder _diagnosticsBuilder;
+        private readonly DiagnosticBag _diagnosticBag;
         private readonly ImmutableArray<SyntaxToken> _tokens;
         private int _position;
 
@@ -30,10 +30,10 @@ namespace Youslyn.CodeAnalysis.Syntax
             }
 
             _tokens = tokensBuilder.ToImmutable();
-            _diagnosticsBuilder = lexer.Diagnostics.ToBuilder();
+            _diagnosticBag = lexer.DiagnosticBag;
         }
 
-        public ImmutableArray<DiagnosticDescriptor> Diagnostics => _diagnosticsBuilder.ToImmutable();
+        public ImmutableArray<Diagnostic> Diagnostics => _diagnosticBag.Diagnostics;
 
         private SyntaxToken Current => _tokens[_position];
 
@@ -119,7 +119,7 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         private void AddError(string message)
         {
-            _diagnosticsBuilder.Add(new DiagnosticDescriptor(message, DiagnosticSeverity.Error));
+            _diagnosticBag.AddDiagnostic(message, DiagnosticSeverity.Error);
         }
 
         /// <summary>
