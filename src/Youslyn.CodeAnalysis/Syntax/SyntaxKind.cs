@@ -15,5 +15,6 @@
         ParenthesizedExpression,
         NumericExpression,
         BinaryExpression,
+        UnaryExpression,
     }
 }

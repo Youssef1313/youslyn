@@ -46,7 +46,34 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
         {
-            var left = ParsePrimaryExpression();
+            ExpressionSyntax left;
+
+            // TODO: This is not correct. DEBUG WHY!!.
+            // > 5 + -2 *3
+            //└── BinaryExpression
+            //    ├── NumericExpression
+            //    │   └── NumericLiteralToken 5
+            //    ├── PlusToken
+            //    └── UnaryExpression
+            //        ├── MinusToken
+            //        └── BinaryExpression
+            //            ├── NumericExpression
+            //            │   └── NumericLiteralToken 2
+            //            ├── AsteriskToken
+            //            └── NumericExpression
+            //                └── NumericLiteralToken 3
+
+            var unaryPrecedence = SyntaxFacts.GetUnaryPrecedence(Current);
+            if (unaryPrecedence != 0 && unaryPrecedence >= parentPrecedence)
+            {
+                var operatorToken = NextToken();
+                var operand = ParseExpression(unaryPrecedence);
+                left = new UnaryExpressionSyntax(operatorToken, operand);
+            }
+            else
+            {
+                left = ParsePrimaryExpression();
+            }
 
             while (true)
             {
