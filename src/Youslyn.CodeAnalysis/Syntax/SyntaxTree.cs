@@ -21,7 +21,7 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         public static void PrettyPrint(SyntaxNode root)
         {
-            PrettyPrint(new SyntaxNodeOrToken(root), string.Empty, true);
+            PrettyPrint(root, string.Empty, true);
         }
 
         private static void PrettyPrint(SyntaxNodeOrToken nodeOrToken, string indent, bool isLast)

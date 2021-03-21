@@ -11,7 +11,7 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         public override SyntaxKind Kind => SyntaxKind.NumericExpression;
 
-        public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create(new SyntaxNodeOrToken(NumberToken));
+        public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create<SyntaxNodeOrToken>(NumberToken);
 
         public SyntaxToken NumberToken { get; }
     }

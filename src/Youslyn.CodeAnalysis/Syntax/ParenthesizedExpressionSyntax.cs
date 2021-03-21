@@ -17,7 +17,7 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         public override SyntaxKind Kind => SyntaxKind.ParenthesizedExpression;
 
-        public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create(
-            new SyntaxNodeOrToken(OpenParen), new SyntaxNodeOrToken(Expression), new SyntaxNodeOrToken(CloseParen));
+        public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create<SyntaxNodeOrToken>(
+            OpenParen, Expression, CloseParen);
     }
 }

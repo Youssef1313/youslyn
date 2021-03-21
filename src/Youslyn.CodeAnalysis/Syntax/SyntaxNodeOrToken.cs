@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
 
 namespace Youslyn.CodeAnalysis.Syntax
 {
@@ -11,9 +9,7 @@ namespace Youslyn.CodeAnalysis.Syntax
     {
         private readonly SyntaxNode? _node;
         private readonly SyntaxToken? _token;
-
         private readonly bool _isNode;
-        private readonly SyntaxKind _kind;
 
         /// <summary>
         /// Constructs a <see cref="SyntaxNodeOrToken"/> with a given <see cref="SyntaxNode"/>.
@@ -25,7 +21,7 @@ namespace Youslyn.CodeAnalysis.Syntax
         public SyntaxNodeOrToken(SyntaxNode node)
         {
             _node = node ?? throw new ArgumentNullException(nameof(node));
-            _kind = node.Kind;
+            Kind = node.Kind;
             _isNode = true;
         }
 
@@ -39,8 +35,10 @@ namespace Youslyn.CodeAnalysis.Syntax
         public SyntaxNodeOrToken(SyntaxToken token)
         {
             _token = token ?? throw new ArgumentNullException(nameof(token));
-            _kind = token.Kind;
+            Kind = token.Kind;
         }
+
+        public SyntaxKind Kind { get; }
 
         /// <summary>
         /// Returns true if this object was constructed using a <see cref="SyntaxNode"/>.
@@ -69,7 +67,7 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_node, _token, _isNode, _kind, Kind);
+            return HashCode.Combine(_node, _token, _isNode, Kind);
         }
 
         public bool Equals(SyntaxNodeOrToken? other)
@@ -92,6 +90,7 @@ namespace Youslyn.CodeAnalysis.Syntax
             return false;
         }
 
-        public SyntaxKind Kind => _kind;
+        public static implicit operator SyntaxNodeOrToken(SyntaxNode node) => node.NodeOrToken;
+        public static implicit operator SyntaxNodeOrToken(SyntaxToken token) => token.NodeOrToken;
     }
 }

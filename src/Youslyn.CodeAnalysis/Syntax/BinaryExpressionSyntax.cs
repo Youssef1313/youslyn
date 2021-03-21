@@ -13,8 +13,8 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         public override SyntaxKind Kind => SyntaxKind.BinaryExpression;
 
-        public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create(
-            new SyntaxNodeOrToken(Left), new SyntaxNodeOrToken(OperatorToken), new SyntaxNodeOrToken(Right));
+        public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create<SyntaxNodeOrToken>(
+            Left, OperatorToken, Right);
 
         public ExpressionSyntax Left { get; }
 

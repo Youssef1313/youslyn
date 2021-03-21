@@ -15,7 +15,7 @@ namespace Youslyn.CodeAnalysis.Syntax
 
         public override SyntaxKind Kind => SyntaxKind.UnaryExpression;
 
-        public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create(
-            new SyntaxNodeOrToken(OperatorToken), new SyntaxNodeOrToken(Operand));
+        public override ImmutableArray<SyntaxNodeOrToken> Children => ImmutableArray.Create<SyntaxNodeOrToken>(
+            OperatorToken, Operand);
     }
 }
